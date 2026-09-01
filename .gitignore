@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/app/generated/prisma
+
+# clerk configuration (can include secrets)
+/.clerk/
+
+# AI coding agent skills
+/.agents/
+/.claude/
+/.windsurf/

@@ -1,0 +1,74 @@
+// Prisma schema for AI Medical Assistant
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model PatientProfile {
+  id          String @id @default(cuid())
+  clerkUserId String @unique
+
+  dateOfBirth DateTime?
+  gender      String?
+  bloodGroup  String?
+  height      Float?
+  weight      Float?
+  allergies   String?
+
+  emergencyContactName  String?
+  emergencyContactPhone String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Conversation {
+  id          String   @id @default(cuid())
+  clerkUserId String
+  title       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  messages Message[]
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  conversationId String
+  role           String
+  content        String
+  createdAt      DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+}
+
+model Medication {
+  id          String   @id @default(cuid())
+  clerkUserId String
+
+  name        String
+  dosage      String?
+  frequency   String?
+  startDate   DateTime?
+  notes       String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MedicalDocument {
+  id          String   @id @default(cuid())
+  clerkUserId String
+
+  fileName    String
+  fileUrl     String
+  fileType    String?
+  description String?
+
+  createdAt   DateTime @default(now())
+}
